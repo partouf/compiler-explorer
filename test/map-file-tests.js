@@ -28,7 +28,7 @@ var assert = chai.assert;
 var MapFileReader = require('../lib/map-file').MapFileReader;
 var logger = require('../lib/logger').logger;
 
-describe('Setup', function () {
+describe('Map setup', function () {
     it('VS-map preferred load address', function () {
         var reader = new MapFileReader();
         reader.preferredLoadAddress.should.equal(0x400000, "default load address");
