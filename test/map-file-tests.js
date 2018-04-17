@@ -33,10 +33,10 @@ describe('Map setup', function () {
         var reader = new MapFileReader();
         reader.preferredLoadAddress.should.equal(0x400000, "default load address");
 
-        reader.TryReadingPreferredAddress(" Preferred load address is 00400000");
+        reader.tryReadingPreferredAddress(" Preferred load address is 00400000");
         reader.preferredLoadAddress.should.equal(0x400000);
         
-        reader.TryReadingPreferredAddress(" Preferred load address is 00410000");
+        reader.tryReadingPreferredAddress(" Preferred load address is 00410000");
         reader.preferredLoadAddress.should.equal(0x410000);
     });
 });
@@ -44,73 +44,73 @@ describe('Map setup', function () {
 describe('Code Segments', function () {
     it('One normal Delphi-Map segment', function () {
         var reader = new MapFileReader();
-        reader.TryReadingCodeSegmentInfo(" 0001:00002838 00000080 C=CODE     S=.text    G=(none)   M=output   ACBP=A9");
+        reader.tryReadingCodeSegmentInfo(" 0001:00002838 00000080 C=CODE     S=.text    G=(none)   M=output   ACBP=A9");
         reader.segments.length.should.equal(1);
 
-        var info = reader.GetSegmentInfoByStartingAddress("0001", 0x2838);
+        var info = reader.getSegmentInfoByStartingAddress("0001", 0x2838);
         info.unitName.should.equal("output");
 
-        info = reader.GetSegmentInfoByStartingAddress(false, reader.GetSegmentOffset("0001") + 0x2838);
+        info = reader.getSegmentInfoByStartingAddress(false, reader.getSegmentOffset("0001") + 0x2838);
         info.unitName.should.equal("output");
 
-        info = reader.GetSegmentInfoByStartingAddress("0001", "2838");
+        info = reader.getSegmentInfoByStartingAddress("0001", "2838");
         assert(info === false, "Address should not be a Start for any segment");
 
-        info = reader.GetSegmentInfoAddressIsIn("0001", 0x2838 + 0x10);
+        info = reader.getSegmentInfoAddressIsIn("0001", 0x2838 + 0x10);
         info.unitName.should.equal("output");
 
-        info = reader.GetSegmentInfoAddressIsIn(false, reader.GetSegmentOffset("0001") + 0x2838 + 0x10);
+        info = reader.getSegmentInfoAddressIsIn(false, reader.getSegmentOffset("0001") + 0x2838 + 0x10);
         info.unitName.should.equal("output");
 
-        info = reader.GetSegmentInfoAddressIsIn("0001", reader.GetSegmentOffset("0001") + 0x2838 + 0x80 + 1);
+        info = reader.getSegmentInfoAddressIsIn("0001", reader.getSegmentOffset("0001") + 0x2838 + 0x80 + 1);
         assert(info === false, "Address should not be in any segment");
 
-        info = reader.GetSegmentInfoByUnitName("output");
+        info = reader.getSegmentInfoByUnitName("output");
         info.unitName.should.equal("output");
-        info.addressInt.should.equal(reader.GetSegmentOffset("0001") + 0x2838);
+        info.addressInt.should.equal(reader.getSegmentOffset("0001") + 0x2838);
     });
 
     it('Not include this segment', function () {
         var reader = new MapFileReader();
-        reader.TryReadingCodeSegmentInfo(" 0002:000000B0 00000023 C=ICODE    S=.itext   G=(none)   M=output   ACBP=A9");
+        reader.tryReadingCodeSegmentInfo(" 0002:000000B0 00000023 C=ICODE    S=.itext   G=(none)   M=output   ACBP=A9");
         reader.segments.length.should.equal(0);
     });
 
     it('ICode/IText segments', function () {
         var reader = new MapFileReader();
-        reader.TryReadingCodeSegmentInfo(" 0002:000000B0 00000023 C=ICODE    S=.itext   G=(none)   M=output   ACBP=A9");
+        reader.tryReadingCodeSegmentInfo(" 0002:000000B0 00000023 C=ICODE    S=.itext   G=(none)   M=output   ACBP=A9");
         reader.isegments.length.should.equal(1);
     });
 
     it('One normal VS-Map segment', function () {
         var reader = new MapFileReader();
-        reader.TryReadingCodeSegmentInfo(" 0001:00002838 00000080H .text$mn                CODE");
+        reader.tryReadingCodeSegmentInfo(" 0001:00002838 00000080H .text$mn                CODE");
         reader.segments.length.should.equal(1);
 
-        var info = reader.GetSegmentInfoByStartingAddress("0001", 0x2838);
-        info.addressInt.should.equal(reader.GetSegmentOffset("0001") + 0x2838);
+        var info = reader.getSegmentInfoByStartingAddress("0001", 0x2838);
+        info.addressInt.should.equal(reader.getSegmentOffset("0001") + 0x2838);
 
-        info = reader.GetSegmentInfoByStartingAddress(false, 0x403838);
-        info.addressInt.should.equal(reader.GetSegmentOffset("0001") + 0x2838);
+        info = reader.getSegmentInfoByStartingAddress(false, 0x403838);
+        info.addressInt.should.equal(reader.getSegmentOffset("0001") + 0x2838);
 
-        info = reader.GetSegmentInfoAddressIsIn(false, reader.GetSegmentOffset("0001") + 0x2838 + 0x10);
-        info.addressInt.should.equal(reader.GetSegmentOffset("0001") + 0x2838);
+        info = reader.getSegmentInfoAddressIsIn(false, reader.getSegmentOffset("0001") + 0x2838 + 0x10);
+        info.addressInt.should.equal(reader.getSegmentOffset("0001") + 0x2838);
         
-        info = reader.GetSegmentInfoAddressIsIn("0001", reader.GetSegmentOffset("0001") + 0x2837);
+        info = reader.getSegmentInfoAddressIsIn("0001", reader.getSegmentOffset("0001") + 0x2837);
         assert(info === false);
     });
 
     it('Repair VS-Map code segment info', function () {
         var reader = new MapFileReader();
-        reader.TryReadingCodeSegmentInfo(" 0002:00000000 00004c73H .text$mn                CODE");
-        reader.TryReadingNamedAddress(" 0002:000007f0       _main                      004117f0 f   ConsoleApplication1.obj");
+        reader.tryReadingCodeSegmentInfo(" 0002:00000000 00004c73H .text$mn                CODE");
+        reader.tryReadingNamedAddress(" 0002:000007f0       _main                      004117f0 f   ConsoleApplication1.obj");
 
-        var info = reader.GetSegmentInfoByStartingAddress("0002", 0);
+        var info = reader.getSegmentInfoByStartingAddress("0002", 0);
         info.unitName.should.equal("ConsoleApplication1.obj");
 
-        reader.GetSegmentOffset("0002").should.equal(0x411000);
+        reader.getSegmentOffset("0002").should.equal(0x411000);
 
-        info = reader.GetSegmentInfoByStartingAddress(false, 0x411000);
+        info = reader.getSegmentInfoByStartingAddress(false, 0x411000);
         info.unitName.should.equal("ConsoleApplication1.obj");
     });
 });
@@ -118,52 +118,52 @@ describe('Code Segments', function () {
 describe('Symbol info', function () {
     it('Delphi-Map symbol test', function () {
         var reader = new MapFileReader();
-        reader.TryReadingNamedAddress(" 0001:00002838       Square");
+        reader.tryReadingNamedAddress(" 0001:00002838       Square");
         reader.namedAddresses.length.should.equal(1);
         
-        var info = reader.GetSymbolAt("0001", 0x2838);
+        var info = reader.getSymbolAt("0001", 0x2838);
         assert(info !== false, "Symbol Square should have been returned 1");
         info.displayName.should.equal("Square");
 
-        info = reader.GetSymbolAt(false, reader.GetSegmentOffset("0001") + 0x2838);
+        info = reader.getSymbolAt(false, reader.getSegmentOffset("0001") + 0x2838);
         assert(info !== false, "Symbol Square should have been returned 2");
         info.displayName.should.equal("Square");
     });
 
     it('Delphi-Map D2009 symbol test', function () {
         var reader = new MapFileReader();
-        reader.TryReadingNamedAddress(" 0001:00002C4C       output.MaxArray");
+        reader.tryReadingNamedAddress(" 0001:00002C4C       output.MaxArray");
         reader.namedAddresses.length.should.equal(1);
 
-        var info = reader.GetSymbolAt("0001", 0x2C4C);
+        var info = reader.getSymbolAt("0001", 0x2C4C);
         assert(info !== false, "Symbol MaxArray should have been returned");
         info.displayName.should.equal("output.MaxArray");
 
-        info = reader.GetSymbolAt(false, reader.GetSegmentOffset("0001") + 0x2C4C);
+        info = reader.getSymbolAt(false, reader.getSegmentOffset("0001") + 0x2C4C);
         assert(info !== false, "Symbol MaxArray should have been returned");
         info.displayName.should.equal("output.MaxArray");
     });
 
     it('VS-Map symbol test', function () {
         var reader = new MapFileReader();
-        reader.TryReadingNamedAddress(" 0002:000006b0       ??$__vcrt_va_start_verify_argument_type@QBD@@YAXXZ 004116b0 f i ConsoleApplication1.obj");
+        reader.tryReadingNamedAddress(" 0002:000006b0       ??$__vcrt_va_start_verify_argument_type@QBD@@YAXXZ 004116b0 f i ConsoleApplication1.obj");
         reader.namedAddresses.length.should.equal(1);
 
-        var info = reader.GetSymbolAt("0002", 0x6b0);
+        var info = reader.getSymbolAt("0002", 0x6b0);
         assert(info !== false, "Symbol start_verify_argument should have been returned 1");
         info.displayName.should.equal("??$__vcrt_va_start_verify_argument_type@QBD@@YAXXZ");
         
-        info = reader.GetSymbolAt(false, 0x4116b0);
+        info = reader.getSymbolAt(false, 0x4116b0);
         assert(info !== false, "Symbol start_verify_argument should have been returned 2");
         info.displayName.should.equal("??$__vcrt_va_start_verify_argument_type@QBD@@YAXXZ");
     });
 
     it('Delphi-Map Duplication prevention', function () {
         var reader = new MapFileReader();
-        reader.TryReadingNamedAddress(" 0001:00002838       Square");
+        reader.tryReadingNamedAddress(" 0001:00002838       Square");
         reader.namedAddresses.length.should.equal(1);
         
-        reader.TryReadingNamedAddress(" 0001:00002838       Square");
+        reader.tryReadingNamedAddress(" 0001:00002838       Square");
         reader.namedAddresses.length.should.equal(1);
     });
 });
@@ -171,34 +171,34 @@ describe('Symbol info', function () {
 describe('Delphi-Map Line number info', function () {
     it('No line', function () {
         var reader = new MapFileReader();
-        assert(reader.TryReadingLineNumbers("") === false);
+        assert(reader.tryReadingLineNumbers("") === false);
     });
 
     it('One line', function () {
         var reader = new MapFileReader();
-        assert(reader.TryReadingLineNumbers("    17 0001:000028A4") === true);
+        assert(reader.tryReadingLineNumbers("    17 0001:000028A4") === true);
 
-        var lineInfo = reader.GetLineInfoByAddress("0001", 0x28A4);
+        var lineInfo = reader.getLineInfoByAddress("0001", 0x28A4);
         lineInfo.lineNumber.should.equal(17);
 
-        lineInfo = reader.GetLineInfoByAddress(false, reader.GetSegmentOffset("0001") + 0x28A4);
+        lineInfo = reader.getLineInfoByAddress(false, reader.getSegmentOffset("0001") + 0x28A4);
         lineInfo.lineNumber.should.equal(17);
     });
 
     it('Multiple lines', function () {
         var reader = new MapFileReader();
-        assert(reader.TryReadingLineNumbers("    12 0001:00002838    13 0001:0000283B    14 0001:00002854    15 0001:00002858") === true);
+        assert(reader.tryReadingLineNumbers("    12 0001:00002838    13 0001:0000283B    14 0001:00002854    15 0001:00002858") === true);
 
-        var lineInfo = reader.GetLineInfoByAddress("0001", 0x2838);
+        var lineInfo = reader.getLineInfoByAddress("0001", 0x2838);
         lineInfo.lineNumber.should.equal(12);
 
-        lineInfo = reader.GetLineInfoByAddress("0001", 0x2858);
+        lineInfo = reader.getLineInfoByAddress("0001", 0x2858);
         lineInfo.lineNumber.should.equal(15);
 
-        lineInfo = reader.GetLineInfoByAddress("0001", 0x2854);
+        lineInfo = reader.getLineInfoByAddress("0001", 0x2854);
         lineInfo.lineNumber.should.equal(14);
 
-        lineInfo = reader.GetLineInfoByAddress("0001", 0x283B);
+        lineInfo = reader.getLineInfoByAddress("0001", 0x283B);
         lineInfo.lineNumber.should.equal(13);
     });
 });
@@ -206,16 +206,16 @@ describe('Delphi-Map Line number info', function () {
 describe('Delphi-Map load test', function () {
     it('Minimal map', function () {
         var reader = new MapFileReader("test/maps/minimal-delphi.map");
-        reader.Run();
+        reader.run();
 
         reader.segments.length.should.equal(4);
         reader.lineNumbers.length.should.equal(7);
         reader.namedAddresses.length.should.equal(11);
 
-        var info = reader.GetSegmentInfoByUnitName("output");
-        info.addressInt.should.equal(reader.GetSegmentOffset("0001") + 0x2C4C);
+        var info = reader.getSegmentInfoByUnitName("output");
+        info.addressInt.should.equal(reader.getSegmentOffset("0001") + 0x2C4C);
 
-        info = reader.GetICodeSegmentInfoByUnitName("output");
+        info = reader.getICodeSegmentInfoByUnitName("output");
         info.segment.should.equal("0002");
         info.addressWithoutOffset.should.equal(0xB0);
         info.addressInt.should.equal(0x4040B0);
@@ -225,17 +225,17 @@ describe('Delphi-Map load test', function () {
 describe('VS-Map load test', function () {
     it('Minimal map', function () {
         var reader = new MapFileReader("test/maps/minimal-vs15.map");
-        reader.Run();
+        reader.run();
 
         reader.segments.length.should.equal(1);
-        reader.GetSegmentInfoByUnitName("ConsoleApplication1.obj").addressInt.should.equal(0x411000);
+        reader.getSegmentInfoByUnitName("ConsoleApplication1.obj").addressInt.should.equal(0x411000);
 
-        reader.GetSegmentOffset("0001").should.equal(0x401000, "offset 1");
-        reader.GetSegmentOffset("0002").should.equal(0x411000, "offset 2");
-        reader.GetSegmentOffset("0003").should.equal(0x416000, "offset 3");
-        reader.GetSegmentOffset("0004").should.equal(0x419000, "offset 4");
-        reader.GetSegmentOffset("0005").should.equal(0x41a000, "offset 5");
+        reader.getSegmentOffset("0001").should.equal(0x401000, "offset 1");
+        reader.getSegmentOffset("0002").should.equal(0x411000, "offset 2");
+        reader.getSegmentOffset("0003").should.equal(0x416000, "offset 3");
+        reader.getSegmentOffset("0004").should.equal(0x419000, "offset 4");
+        reader.getSegmentOffset("0005").should.equal(0x41a000, "offset 5");
         //reader.GetSegmentOffset("0006").should.equal(0x41a000);
-        reader.GetSegmentOffset("0007").should.equal(0x41c000, "offset 7");
+        reader.getSegmentOffset("0007").should.equal(0x41c000, "offset 7");
     });
 });
