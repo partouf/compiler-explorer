@@ -1,0 +1,1425 @@
+[
+    {
+        "text": "PASCALMAIN:",
+        "source": null
+    },
+    {
+        "opcodes": [
+            "55"
+        ],
+        "address": 4199728,
+        "text": " push   ebp",
+        "source": {
+            "file": null,
+            "line": 1
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "e5"
+        ],
+        "address": 4199729,
+        "text": " mov    ebp,esp",
+        "source": {
+            "file": null,
+            "line": 1
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "c8",
+            "69",
+            "00",
+            "00"
+        ],
+        "address": 4199731,
+        "text": " call   407f00 <FPC_INITIALIZEUNITS>",
+        "source": {
+            "file": null,
+            "line": 1
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4226816
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "e8",
+            "e3",
+            "6c",
+            "00",
+            "00"
+        ],
+        "address": 4199736,
+        "text": " call   408220 <FPC_DO_EXIT>",
+        "source": {
+            "file": null,
+            "line": 1
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4227616
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "c9"
+        ],
+        "address": 4199741,
+        "text": " leave  ",
+        "source": {
+            "file": null,
+            "line": 1
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c3"
+        ],
+        "address": 4199742,
+        "text": " ret    ",
+        "source": {
+            "file": null,
+            "line": 1
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "90"
+        ],
+        "address": 4199743,
+        "text": " nop",
+        "source": {
+            "file": null,
+            "line": 1
+        },
+        "links": null
+    },
+    {
+        "text": "DEBUGEND_$P$PROG:",
+        "source": null
+    },
+    {
+        "opcodes": [
+            "64",
+            "a1",
+            "04",
+            "00",
+            "00",
+            "00"
+        ],
+        "address": 4199744,
+        "text": " mov    eax,fs:0x4",
+        "source": {
+            "file": null,
+            "line": 1
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c3"
+        ],
+        "address": 4199750,
+        "text": " ret    ",
+        "source": {
+            "file": null,
+            "line": 1
+        },
+        "links": null
+    },
+    {
+        "text": "DEBUGSTART_$OUTPUT:",
+        "source": null
+    },
+    {
+        "opcodes": [
+            "55"
+        ],
+        "address": 4244032,
+        "text": " push   ebp",
+        "source": {
+            "file": null,
+            "line": 17
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "e5"
+        ],
+        "address": 4244033,
+        "text": " mov    ebp,esp",
+        "source": {
+            "file": null,
+            "line": 17
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8d",
+            "64",
+            "24",
+            "fc"
+        ],
+        "address": 4244035,
+        "text": " lea    esp,[esp-0x4]",
+        "source": {
+            "file": null,
+            "line": 17
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8b",
+            "55",
+            "08"
+        ],
+        "address": 4244039,
+        "text": " mov    edx,DWORD PTR [ebp+0x8]",
+        "source": {
+            "file": null,
+            "line": 18
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8b",
+            "45",
+            "08"
+        ],
+        "address": 4244042,
+        "text": " mov    eax,DWORD PTR [ebp+0x8]",
+        "source": {
+            "file": null,
+            "line": 18
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "0f",
+            "af",
+            "c2"
+        ],
+        "address": 4244045,
+        "text": " imul   eax,edx",
+        "source": {
+            "file": null,
+            "line": 18
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8d",
+            "40",
+            "10"
+        ],
+        "address": 4244048,
+        "text": " lea    eax,[eax+0x10]",
+        "source": {
+            "file": null,
+            "line": 18
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "45",
+            "fc"
+        ],
+        "address": 4244051,
+        "text": " mov    DWORD PTR [ebp-0x4],eax",
+        "source": {
+            "file": null,
+            "line": 18
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8b",
+            "45",
+            "fc"
+        ],
+        "address": 4244054,
+        "text": " mov    eax,DWORD PTR [ebp-0x4]",
+        "source": {
+            "file": null,
+            "line": 20
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c9"
+        ],
+        "address": 4244057,
+        "text": " leave  ",
+        "source": {
+            "file": null,
+            "line": 20
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c2",
+            "04",
+            "00"
+        ],
+        "address": 4244058,
+        "text": " ret    0x4",
+        "source": {
+            "file": null,
+            "line": 20
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "90"
+        ],
+        "address": 4244061,
+        "text": " nop",
+        "source": {
+            "file": null,
+            "line": 20
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "90"
+        ],
+        "address": 4244062,
+        "text": " nop",
+        "source": {
+            "file": null,
+            "line": 20
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "90"
+        ],
+        "address": 4244063,
+        "text": " nop",
+        "source": {
+            "file": null,
+            "line": 20
+        },
+        "links": null
+    },
+    {
+        "text": "INIT$_$OUTPUT:",
+        "source": null
+    },
+    {
+        "opcodes": [
+            "55"
+        ],
+        "address": 4244064,
+        "text": " push   ebp",
+        "source": {
+            "file": null,
+            "line": 22
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "e5"
+        ],
+        "address": 4244065,
+        "text": " mov    ebp,esp",
+        "source": {
+            "file": null,
+            "line": 22
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8d",
+            "64",
+            "24",
+            "fc"
+        ],
+        "address": 4244067,
+        "text": " lea    esp,[esp-0x4]",
+        "source": {
+            "file": null,
+            "line": 22
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "53"
+        ],
+        "address": 4244071,
+        "text": " push   ebx",
+        "source": {
+            "file": null,
+            "line": 22
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c7",
+            "45",
+            "fc",
+            "00",
+            "00",
+            "00",
+            "00"
+        ],
+        "address": 4244072,
+        "text": " mov    DWORD PTR [ebp-0x4],0x0",
+        "source": {
+            "file": null,
+            "line": 22
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "cc",
+            "e8",
+            "ff",
+            "ff"
+        ],
+        "address": 4244079,
+        "text": " call   40ab40 <fpc_get_output>",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4238144
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "89",
+            "c3"
+        ],
+        "address": 4244084,
+        "text": " mov    ebx,eax",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "6a",
+            "06"
+        ],
+        "address": 4244086,
+        "text": " push   0x6",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "c3",
+            "ff",
+            "ff",
+            "ff"
+        ],
+        "address": 4244088,
+        "text": " call   40c240 <DEBUGSTART_$OUTPUT>",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4244032
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "8d",
+            "55",
+            "fc"
+        ],
+        "address": 4244093,
+        "text": " lea    edx,[ebp-0x4]",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "2b",
+            "00",
+            "00",
+            "00"
+        ],
+        "address": 4244096,
+        "text": " call   40c2b0 <DEBUGEND_$OUTPUT>",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4244144
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "8b",
+            "4d",
+            "fc"
+        ],
+        "address": 4244101,
+        "text": " mov    ecx,DWORD PTR [ebp-0x4]",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "da"
+        ],
+        "address": 4244104,
+        "text": " mov    edx,ebx",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "b8",
+            "00",
+            "00",
+            "00",
+            "00"
+        ],
+        "address": 4244106,
+        "text": " mov    eax,0x0",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "3c",
+            "eb",
+            "ff",
+            "ff"
+        ],
+        "address": 4244111,
+        "text": " call   40add0 <FPC_WRITE_TEXT_ANSISTR>",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4238800
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "e8",
+            "27",
+            "bc",
+            "ff",
+            "ff"
+        ],
+        "address": 4244116,
+        "text": " call   407ec0 <FPC_IOCHECK>",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4226752
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "89",
+            "d8"
+        ],
+        "address": 4244121,
+        "text": " mov    eax,ebx",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "e0",
+            "e9",
+            "ff",
+            "ff"
+        ],
+        "address": 4244123,
+        "text": " call   40ac80 <fpc_writeln_end>",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4238464
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "e8",
+            "1b",
+            "bc",
+            "ff",
+            "ff"
+        ],
+        "address": 4244128,
+        "text": " call   407ec0 <FPC_IOCHECK>",
+        "source": {
+            "file": null,
+            "line": 23
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4226752
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "8d",
+            "45",
+            "fc"
+        ],
+        "address": 4244133,
+        "text": " lea    eax,[ebp-0x4]",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "f3",
+            "5f",
+            "ff",
+            "ff"
+        ],
+        "address": 4244136,
+        "text": " call   4022a0 <FPC_ANSISTR_DECR_REF>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4203168
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "5b"
+        ],
+        "address": 4244141,
+        "text": " pop    ebx",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c9"
+        ],
+        "address": 4244142,
+        "text": " leave  ",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c3"
+        ],
+        "address": 4244143,
+        "text": " ret    ",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "text": "DEBUGEND_$OUTPUT:",
+        "source": null
+    },
+    {
+        "opcodes": [
+            "55"
+        ],
+        "address": 4244144,
+        "text": " push   ebp",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "e5"
+        ],
+        "address": 4244145,
+        "text": " mov    ebp,esp",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8d",
+            "a4",
+            "24",
+            "d4",
+            "fe",
+            "ff",
+            "ff"
+        ],
+        "address": 4244147,
+        "text": " lea    esp,[esp-0x12c]",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "53"
+        ],
+        "address": 4244154,
+        "text": " push   ebx",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "56"
+        ],
+        "address": 4244155,
+        "text": " push   esi",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "c3"
+        ],
+        "address": 4244156,
+        "text": " mov    ebx,eax",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "d6"
+        ],
+        "address": 4244158,
+        "text": " mov    esi,edx",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c7",
+            "85",
+            "d4",
+            "fe",
+            "ff",
+            "ff",
+            "00",
+            "00",
+            "00",
+            "00"
+        ],
+        "address": 4244160,
+        "text": " mov    DWORD PTR [ebp-0x12c],0x0",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "b8",
+            "01",
+            "00",
+            "00",
+            "00"
+        ],
+        "address": 4244170,
+        "text": " mov    eax,0x1",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8d",
+            "55",
+            "dc"
+        ],
+        "address": 4244175,
+        "text": " lea    edx,[ebp-0x24]",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8d",
+            "4d",
+            "f4"
+        ],
+        "address": 4244178,
+        "text": " lea    ecx,[ebp-0xc]",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "f6",
+            "b4",
+            "ff",
+            "ff"
+        ],
+        "address": 4244181,
+        "text": " call   4077d0 <FPC_PUSHEXCEPTADDR>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4224976
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "e8",
+            "e1",
+            "c3",
+            "ff",
+            "ff"
+        ],
+        "address": 4244186,
+        "text": " call   4086c0 <FPC_SETJMP>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4228800
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "50"
+        ],
+        "address": 4244191,
+        "text": " push   eax",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "85",
+            "c0"
+        ],
+        "address": 4244192,
+        "text": " test   eax,eax",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "75",
+            "46"
+        ],
+        "address": 4244194,
+        "text": " jne    40c32a <DEBUGEND_$OUTPUT+0x7a>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4244266
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "68",
+            "ff",
+            "00",
+            "00",
+            "00"
+        ],
+        "address": 4244196,
+        "text": " push   0xff",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8d",
+            "8d",
+            "d8",
+            "fe",
+            "ff",
+            "ff"
+        ],
+        "address": 4244201,
+        "text": " lea    ecx,[ebp-0x128]",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "d8"
+        ],
+        "address": 4244207,
+        "text": " mov    eax,ebx",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "ba",
+            "ff",
+            "ff",
+            "ff",
+            "ff"
+        ],
+        "address": 4244209,
+        "text": " mov    edx,0xffffffff",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "85",
+            "66",
+            "ff",
+            "ff"
+        ],
+        "address": 4244214,
+        "text": " call   402980 <FPC_SHORTSTR_SINT>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4204928
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "8d",
+            "8d",
+            "d4",
+            "fe",
+            "ff",
+            "ff"
+        ],
+        "address": 4244219,
+        "text": " lea    ecx,[ebp-0x12c]",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "8d",
+            "85",
+            "d8",
+            "fe",
+            "ff",
+            "ff"
+        ],
+        "address": 4244225,
+        "text": " lea    eax,[ebp-0x128]",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "66",
+            "ba",
+            "00",
+            "00"
+        ],
+        "address": 4244231,
+        "text": " mov    dx,0x0",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "60",
+            "9b",
+            "ff",
+            "ff"
+        ],
+        "address": 4244235,
+        "text": " call   405e70 <fpc_shortstr_to_ansistr>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4218480
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "8b",
+            "95",
+            "d4",
+            "fe",
+            "ff",
+            "ff"
+        ],
+        "address": 4244240,
+        "text": " mov    edx,DWORD PTR [ebp-0x12c]",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "89",
+            "f0"
+        ],
+        "address": 4244246,
+        "text": " mov    eax,esi",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "03",
+            "93",
+            "ff",
+            "ff"
+        ],
+        "address": 4244248,
+        "text": " call   405620 <FPC_ANSISTR_ASSIGN>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4216352
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "89",
+            "f0"
+        ],
+        "address": 4244253,
+        "text": " mov    eax,esi",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "b1",
+            "00"
+        ],
+        "address": 4244255,
+        "text": " mov    cl,0x0",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "66",
+            "ba",
+            "00",
+            "00"
+        ],
+        "address": 4244257,
+        "text": " mov    dx,0x0",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "36",
+            "a4",
+            "ff",
+            "ff"
+        ],
+        "address": 4244261,
+        "text": " call   406760 <SYSTEM_$$_SETCODEPAGE$RAWBYTESTRING$WORD$BOOLEAN>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4220768
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "e8",
+            "21",
+            "b7",
+            "ff",
+            "ff"
+        ],
+        "address": 4244266,
+        "text": " call   407a50 <FPC_POPADDRSTACK>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4225616
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "8d",
+            "85",
+            "d4",
+            "fe",
+            "ff",
+            "ff"
+        ],
+        "address": 4244271,
+        "text": " lea    eax,[ebp-0x12c]",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "e8",
+            "66",
+            "5f",
+            "ff",
+            "ff"
+        ],
+        "address": 4244277,
+        "text": " call   4022a0 <FPC_ANSISTR_DECR_REF>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4203168
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "58"
+        ],
+        "address": 4244282,
+        "text": " pop    eax",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "85",
+            "c0"
+        ],
+        "address": 4244283,
+        "text": " test   eax,eax",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "74",
+            "05"
+        ],
+        "address": 4244285,
+        "text": " je     40c344 <DEBUGEND_$OUTPUT+0x94>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4244292
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "e8",
+            "3c",
+            "b8",
+            "ff",
+            "ff"
+        ],
+        "address": 4244287,
+        "text": " call   407b80 <FPC_RERAISE>",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": [
+            {
+                "offset": 8,
+                "length": 6,
+                "to": 4225920
+            }
+        ]
+    },
+    {
+        "opcodes": [
+            "5e"
+        ],
+        "address": 4244292,
+        "text": " pop    esi",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "5b"
+        ],
+        "address": 4244293,
+        "text": " pop    ebx",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c9"
+        ],
+        "address": 4244294,
+        "text": " leave  ",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    },
+    {
+        "opcodes": [
+            "c3"
+        ],
+        "address": 4244295,
+        "text": " ret    ",
+        "source": {
+            "file": null,
+            "line": 24
+        },
+        "links": null
+    }
+]
