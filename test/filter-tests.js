@@ -141,3 +141,39 @@ describe('Filter test cases', function () {
         });
     });
 });
+
+if (process.platform === "win32") {
+    const winonlyCases = fs.readdirSync(__dirname + '/winonly-cases')
+    .filter(function (x) {
+        return x.match(/\.asm$/);
+    })
+    .map(function (x) {
+        return __dirname + '/winonly-cases/' + x;
+    });
+
+    describe('Windows Filter test cases', function () {
+        describe('Directive filters', function () {
+            winonlyCases.forEach(function (x) {
+                testFilter(x, ".directives", {directives: true});
+            });
+        });
+        describe('Directives and labels together', function () {
+            winonlyCases.forEach(function (x) {
+                testFilter(x, ".directives.labels",
+                    {directives: true, labels: true});
+            });
+        });
+        describe('Directives, labels and comments', function () {
+            winonlyCases.forEach(function (x) {
+                testFilter(x, ".directives.labels.comments",
+                    {directives: true, labels: true, commentOnly: true});
+            });
+        });
+        describe('Directives, labels, comments and binary mode', function () {
+            winonlyCases.forEach(function (x) {
+                testFilter(x, ".dlcb",
+                    {directives: true, labels: true, commentOnly: true, binary: true});
+            });
+        });
+    });
+}
