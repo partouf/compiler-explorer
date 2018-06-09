@@ -53,6 +53,7 @@ const opts = nopt({
     archivedVersions: [String],
     noRemoteFetch: [Boolean],
     tmpDir: [String],
+    defaultDrive: [String],
     wsl: [Boolean],
     language: [String],
     noCache: [Boolean]
@@ -64,6 +65,8 @@ if (opts.debug) logger.level = 'debug';
 // of process.env is allowed: https://nodejs.org/api/process.html#process_process_env
 if ((process.platform === "win32") || child_process.execSync('uname -a').toString().indexOf('Microsoft') > -1)
     process.env.wsl = true;
+
+if (opts.defaultDrive) process.env.defaultDrive = opts.defaultDrive;
 
 // AP: Allow setting of tmpDir (used in lib/base-compiler.js & lib/exec.js) through opts.
 // WSL requires a directory on a Windows volume. Set that to Windows %TEMP% if no tmpDir supplied.
