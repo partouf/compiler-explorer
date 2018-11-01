@@ -166,7 +166,14 @@ Tool.prototype.onCompileResult = function (id, compiler, result) {
 
     if (toolResult) {
         _.each((toolResult.stdout || []).concat(toolResult.stderr || []), function (obj) {
-            this.add(this.normalAnsiToHtml.toHtml(obj.text), obj.tag ? obj.tag.line : obj.line);
+            if ((obj.tag && obj.tag.column) || obj.c) {
+                this.add(this.normalAnsiToHtml.toHtml(obj.text),
+                    obj.tag ? obj.tag.line : obj.line, 
+                    obj.tag ? obj.tag.column : obj.column);
+            } else {
+                this.add(this.normalAnsiToHtml.toHtml(obj.text),
+                    obj.tag ? obj.tag.line : obj.line);
+            }
         }, this);
     
         this.toolName = toolResult.name;
@@ -182,7 +189,7 @@ Tool.prototype.onCompileResult = function (id, compiler, result) {
     }
 };
 
-Tool.prototype.add = function (msg, lineNum) {
+Tool.prototype.add = function (msg, lineNum, colNum) {
     var elem = $('<p></p>').appendTo(this.contentRoot);
     if (lineNum) {
         elem.html(
@@ -190,12 +197,20 @@ Tool.prototype.add = function (msg, lineNum) {
                 .prop('href', 'javascript:;')
                 .html(msg)
                 .click(_.bind(function (e) {
-                    this.eventHub.emit('editorSetDecoration', this.editorId, lineNum, true);
+                    if (colNum) {
+                        this.eventHub.emit('editorSetDecorationCol', this.editorId, lineNum, colNum, true);
+                    } else {
+                        this.eventHub.emit('editorSetDecoration', this.editorId, lineNum, true);
+                    }
                     e.preventDefault();
                     return false;
                 }, this))
                 .on('mouseover', _.bind(function () {
-                    this.eventHub.emit('editorSetDecoration', this.editorId, lineNum, false);
+                    if (colNum) {
+                        this.eventHub.emit('editorSetDecorationCol', this.editorId, lineNum, colNum, false);
+                    } else {
+                        this.eventHub.emit('editorSetDecoration', this.editorId, lineNum, false);
+                    }
                 }, this))
         );
     } else {

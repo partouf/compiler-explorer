@@ -229,6 +229,7 @@ Editor.prototype.initCallbacks = function () {
     this.eventHub.on('compileResult', this.onCompileResponse, this);
     this.eventHub.on('selectLine', this.onSelectLine, this);
     this.eventHub.on('editorSetDecoration', this.onEditorSetDecoration, this);
+    this.eventHub.on('editorSetDecorationCol', this.onEditorSetDecorationCol, this);
     this.eventHub.on('settingsChange', this.onSettingsChange, this);
     this.eventHub.on('conformanceViewOpen', this.onConformanceViewOpen, this);
     this.eventHub.on('conformanceViewClose', this.onConformanceViewClose, this);
@@ -657,6 +658,23 @@ Editor.prototype.onEditorSetDecoration = function (id, lineNum, reveal) {
             range: new monaco.Range(lineNum, 1, lineNum, 1),
             options: {
                 isWholeLine: true,
+                linesDecorationsClassName: 'linked-code-decoration-margin',
+                inlineClassName: 'linked-code-decoration-inline'
+            }
+        }];
+        this.updateDecorations();
+    }
+};
+
+Editor.prototype.onEditorSetDecorationCol = function (id, lineNum, colNum, reveal) {
+    if (Number(id) === this.id) {
+        if (reveal && lineNum)
+            this.editor.revealLineInCenter(lineNum);
+
+        this.decorations.linkedCode = lineNum === -1 || !lineNum ? [] : [{
+            range: new monaco.Range(lineNum, colNum, lineNum, colNum),
+            options: {
+                isWholeLine: false,
                 linesDecorationsClassName: 'linked-code-decoration-margin',
                 inlineClassName: 'linked-code-decoration-inline'
             }
