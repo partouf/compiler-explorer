@@ -672,7 +672,7 @@ Editor.prototype.onEditorSetDecorationCol = function (id, lineNum, colNum, revea
             this.editor.revealLineInCenter(lineNum);
 
         this.decorations.linkedCode = lineNum === -1 || !lineNum ? [] : [{
-            range: new monaco.Range(lineNum, colNum - 1, lineNum, colNum + 1),
+            range: new monaco.Range(lineNum, colNum + 1, lineNum, colNum + 1),
             options: {
                 isWholeLine: false,
                 linesDecorationsClassName: 'linked-code-decoration-margin',
