@@ -25,25 +25,26 @@
 var chai = require('chai');
 var should = chai.should();
 var assert = chai.assert;
-var MapFileReader = require('../lib/map-file').MapFileReader;
+var MapFileReaderDelphi = require('../lib/map-file-delphi').MapFileReader;
+var MapFileReaderVS = require('../lib/map-file-vs').MapFileReader;
 var logger = require('../lib/logger').logger;
 
 describe('Map setup', function () {
     it('VS-map preferred load address', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderVS();
         reader.preferredLoadAddress.should.equal(0x400000, "default load address");
 
         reader.tryReadingPreferredAddress(" Preferred load address is 00400000");
-        reader.preferredLoadAddress.should.equal(0x400000);
+        reader.preferredLoadAddress.should.equal(0x400000, "prefered load address test 1");
         
         reader.tryReadingPreferredAddress(" Preferred load address is 00410000");
-        reader.preferredLoadAddress.should.equal(0x410000);
+        reader.preferredLoadAddress.should.equal(0x410000, "prefered load address test 2");
     });
 });
 
 describe('Code Segments', function () {
     it('One normal Delphi-Map segment', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderDelphi();
         reader.tryReadingCodeSegmentInfo(" 0001:00002838 00000080 C=CODE     S=.text    G=(none)   M=output   ACBP=A9");
         reader.segments.length.should.equal(1);
 
@@ -71,19 +72,19 @@ describe('Code Segments', function () {
     });
 
     it('Not include this segment', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderDelphi();
         reader.tryReadingCodeSegmentInfo(" 0002:000000B0 00000023 C=ICODE    S=.itext   G=(none)   M=output   ACBP=A9");
         reader.segments.length.should.equal(0);
     });
 
     it('ICode/IText segments', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderDelphi();
         reader.tryReadingCodeSegmentInfo(" 0002:000000B0 00000023 C=ICODE    S=.itext   G=(none)   M=output   ACBP=A9");
         reader.isegments.length.should.equal(1);
     });
 
     it('One normal VS-Map segment', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderVS();
         reader.tryReadingCodeSegmentInfo(" 0001:00002838 00000080H .text$mn                CODE");
         reader.segments.length.should.equal(1);
 
@@ -101,7 +102,7 @@ describe('Code Segments', function () {
     });
 
     it('Repair VS-Map code segment info', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderVS();
         reader.tryReadingCodeSegmentInfo(" 0002:00000000 00004c73H .text$mn                CODE");
         reader.tryReadingNamedAddress(" 0002:000007f0       _main                      004117f0 f   ConsoleApplication1.obj");
 
@@ -117,7 +118,7 @@ describe('Code Segments', function () {
 
 describe('Symbol info', function () {
     it('Delphi-Map symbol test', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderDelphi();
         reader.tryReadingNamedAddress(" 0001:00002838       Square");
         reader.namedAddresses.length.should.equal(1);
         
@@ -131,7 +132,7 @@ describe('Symbol info', function () {
     });
 
     it('Delphi-Map D2009 symbol test', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderDelphi();
         reader.tryReadingNamedAddress(" 0001:00002C4C       output.MaxArray");
         reader.namedAddresses.length.should.equal(1);
 
@@ -145,7 +146,7 @@ describe('Symbol info', function () {
     });
 
     it('VS-Map symbol test', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderVS();
         reader.tryReadingNamedAddress(" 0002:000006b0       ??$__vcrt_va_start_verify_argument_type@QBD@@YAXXZ 004116b0 f i ConsoleApplication1.obj");
         reader.namedAddresses.length.should.equal(1);
 
@@ -159,7 +160,7 @@ describe('Symbol info', function () {
     });
 
     it('Delphi-Map Duplication prevention', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderDelphi();
         reader.tryReadingNamedAddress(" 0001:00002838       Square");
         reader.namedAddresses.length.should.equal(1);
         
@@ -170,12 +171,12 @@ describe('Symbol info', function () {
 
 describe('Delphi-Map Line number info', function () {
     it('No line', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderDelphi();
         assert(reader.tryReadingLineNumbers("") === false);
     });
 
     it('One line', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderDelphi();
         assert(reader.tryReadingLineNumbers("    17 0001:000028A4") === true);
 
         var lineInfo = reader.getLineInfoByAddress("0001", 0x28A4);
@@ -186,7 +187,7 @@ describe('Delphi-Map Line number info', function () {
     });
 
     it('Multiple lines', function () {
-        var reader = new MapFileReader();
+        var reader = new MapFileReaderDelphi();
         assert(reader.tryReadingLineNumbers("    12 0001:00002838    13 0001:0000283B    14 0001:00002854    15 0001:00002858") === true);
 
         var lineInfo = reader.getLineInfoByAddress("0001", 0x2838);
@@ -205,7 +206,7 @@ describe('Delphi-Map Line number info', function () {
 
 describe('Delphi-Map load test', function () {
     it('Minimal map', function () {
-        var reader = new MapFileReader("test/maps/minimal-delphi.map");
+        var reader = new MapFileReaderDelphi("test/maps/minimal-delphi.map");
         reader.run();
 
         reader.segments.length.should.equal(4);
@@ -224,7 +225,7 @@ describe('Delphi-Map load test', function () {
 
 describe('VS-Map load test', function () {
     it('Minimal map', function () {
-        var reader = new MapFileReader("test/maps/minimal-vs15.map");
+        var reader = new MapFileReaderVS("test/maps/minimal-vs15.map");
         reader.run();
 
         reader.segments.length.should.equal(1);
