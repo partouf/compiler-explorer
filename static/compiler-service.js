@@ -30,6 +30,10 @@ var options = require('options');
 var Promise = require('es6-promise').Promise;
 
 function CompilerService() {
+    this.base = window.httpRoot;
+    if (!this.base.endsWith('/')) {
+        this.base += '/';
+    }
     this.cache = new LruCache({
         max: 200 * 1024,
         length: function (n) {
@@ -74,9 +78,10 @@ CompilerService.prototype.submit = function (request) {
         }
     }
     return new Promise(_.bind(function (resolve, reject) {
+        var compilerId = encodeURIComponent(request.compiler);
         $.ajax({
             type: 'POST',
-            url: 'api/compiler/' + encodeURIComponent(request.compiler) + '/compile',
+            url: window.location.origin + this.base + 'api/compiler/' + compilerId + '/compile',
             dataType: 'json',
             contentType: 'application/json',
             data: jsonRequest,
@@ -100,6 +105,19 @@ CompilerService.prototype.submit = function (request) {
                         case "abort":
                             error = "Request was aborted";
                             break;
+                        case "error":
+                            switch (xhr.status) {
+                                case 500:
+                                    error = "Request failed: internal server error";
+                                    break;
+                                case 504:
+                                    error = "Request failed: gateway timeout";
+                                    break;
+                                default:
+                                    error = "Request failed: HTTP error code " + xhr.status;
+                                    break;
+                            }
+                            break;
                         default:
                             error = "Error sending request";
                             break;
@@ -114,8 +132,62 @@ CompilerService.prototype.submit = function (request) {
     }, this));
 };
 
+CompilerService.prototype.requestPopularArguments = function (compilerId, options) {
+    return new Promise(_.bind(function (resolve, reject) {
+        $.ajax({
+            type: 'POST',
+            url: window.location.origin + this.base + 'api/popularArguments/' + compilerId,
+            dataType: 'json',
+            data: JSON.stringify({
+                usedOptions: options,
+                presplit: false
+            }),
+            success: _.bind(function (result) {
+                resolve({
+                    request: compilerId,
+                    result: result,
+                    localCacheHit: false
+                });
+            }, this),
+            error: function (xhr, textStatus, errorThrown) {
+                var error = errorThrown;
+                if (!error) {
+                    switch (textStatus) {
+                        case "timeout":
+                            error = "Request timed out";
+                            break;
+                        case "abort":
+                            error = "Request was aborted";
+                            break;
+                        case "error":
+                            switch (xhr.status) {
+                                case 500:
+                                    error = "Request failed: internal server error";
+                                    break;
+                                case 504:
+                                    error = "Request failed: gateway timeout";
+                                    break;
+                                default:
+                                    error = "Request failed: HTTP error code " + xhr.status;
+                                    break;
+                            }
+                            break;
+                        default:
+                            error = "Error sending request";
+                            break;
+                    }
+                }
+                reject({
+                    request: compilerId,
+                    error: error
+                });
+            }
+        });
+    }, this));
+};
+
 CompilerService.prototype.expand = function (source) {
-    var includeFind = /^\s*#include\s*["<](https?:\/\/[^>"]+)[>"]/;
+    var includeFind = /^\s*#\s*include\s*["<](https?:\/\/[^>"]+)[>"]/;
     var lines = source.split("\n");
     var promises = [];
     _.each(lines, function (line, lineNumZeroBased) {
