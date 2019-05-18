@@ -37,10 +37,11 @@ const nopt = require('nopt'),
     _ = require('underscore'),
     express = require('express'),
     Sentry = require('@sentry/node'),
-    logger = require('./lib/logger').logger,
+    {logger, logToPapertrail, suppressConsoleLog} = require('./lib/logger'),
     webpackDevMiddleware = require("webpack-dev-middleware"),
     utils = require('./lib/utils'),
     clientState = require('./lib/clientstate'),
+    initialiseWine = require('./lib/exec').initialiseWine,
     clientStateGoldenifier = require('./lib/clientstate-normalizer').ClientStateGoldenifier,
     clientStateNormalizer = require('./lib/clientstate-normalizer').ClientStateNormalizer;
 
@@ -65,7 +66,10 @@ const opts = nopt({
     // Do not use caching for compilation results (Requests might still be cached by the client's browser)
     noCache: [Boolean],
     // Don't cleanly run if two or more compilers have clashing ids
-    ensureNoIdClash: [Boolean]
+    ensureNoIdClash: [Boolean],
+    logHost: [String],
+    logPort: [Number],
+    suppressConsoleLog: [Boolean]
 });
 
 if (opts.debug) logger.level = 'debug';
@@ -112,8 +116,18 @@ const defArgs = {
     wantedLanguage: opts.language || null,
     doCache: !opts.noCache,
     fetchCompilersFromRemote: !opts.noRemoteFetch,
-    ensureNoCompilerClash: opts.ensureNoIdClash
+    ensureNoCompilerClash: opts.ensureNoIdClash,
+    suppressConsoleLog: opts.suppressConsoleLog || false
 };
+
+if (opts.logHost && opts.logPort) {
+    logToPapertrail(opts.logHost, opts.logPort, defArgs.env.join("."));
+}
+
+if (defArgs.suppressConsoleLog) {
+    logger.info("Disabling further console logging");
+    suppressConsoleLog();
+}
 
 const webpackConfig = require('./webpack.config.js')[1],
     webpackCompiler = require('webpack')(webpackConfig),
@@ -128,11 +142,11 @@ const isDevMode = () => process.env.NODE_ENV === "DEV";
 const propHierarchy = _.flatten([
     'defaults',
     defArgs.env,
-    _.map(defArgs.env, e => e + '.' + process.platform),
+    _.map(defArgs.env, e => `${e}.${process.platform}`),
     process.platform,
     os.hostname(),
     'local']);
-logger.info("properties hierarchy: " + propHierarchy.join(', '));
+logger.info(`properties hierarchy: ${propHierarchy.join(', ')}`);
 
 // Propagate debug mode if need be
 if (opts.propDebug) props.setDebug(true);
@@ -170,7 +184,7 @@ const compilerProps = new props.CompilerProps(languages, ceProps);
 
 const staticMaxAgeSecs = ceProps('staticMaxAgeSecs', 0);
 const maxUploadSize = ceProps('maxUploadSize', '1mb');
-const extraBodyClass = ceProps('extraBodyClass', '');
+const extraBodyClass = ceProps('extraBodyClass', isDevMode() ? 'dev' : '');
 const storageSolution = compilerProps.ceProps('storageSolution', 'local');
 const httpRoot = ceProps('httpRoot', '/');
 const httpRootDir = httpRoot.endsWith('/') ? httpRoot : (httpRoot + '/');
@@ -198,6 +212,7 @@ function getGoldenLayoutFromClientState(state) {
 const awsProps = props.propsFor("aws");
 
 aws.initConfig(awsProps)
+    .then(initialiseWine)
     .then(() => {
         // function to load internal binaries (i.e. lib/source/*.js)
         function loadSources() {
@@ -223,13 +238,13 @@ aws.initConfig(awsProps)
         const CompilerFinder = require('./lib/compiler-finder');
         const compilerFinder = new CompilerFinder(compileHandler, compilerProps, awsProps, defArgs,
             clientOptionsHandler);
+        const googleShortUrlResolver = new google.ShortLinkResolver();
 
         function oldGoogleUrlHandler(req, res, next) {
-            const resolver = new google.ShortLinkResolver(aws.getConfig('googleApiKey'));
             const bits = req.url.split("/");
             if (bits.length !== 2 || req.method !== "GET") return next();
-            const googleUrl = `http://goo.gl/${encodeURIComponent(bits[1])}`;
-            resolver.resolve(googleUrl)
+            const googleUrl = `https://goo.gl/${encodeURIComponent(bits[1])}`;
+            googleShortUrlResolver.resolve(googleUrl)
                 .then(resultObj => {
                     const parsed = url.parse(resultObj.longUrl);
                     const allowedRe = new RegExp(ceProps('allowedShortUrlHostRe'));
@@ -238,7 +253,7 @@ aws.initConfig(awsProps)
                         return next();
                     }
                     res.writeHead(301, {
-                        Location: resultObj.id,
+                        Location: resultObj.longUrl,
                         'Cache-Control': 'public'
                     });
                     res.end();
@@ -299,7 +314,7 @@ aws.initConfig(awsProps)
                         release: gitReleaseName,
                         environment: defArgs.env
                     });
-                    logger.info("Configured with Sentry endpoint", sentryDsn);
+                    logger.info(`Configured with Sentry endpoint ${sentryDsn}`);
                 } else {
                     logger.info("Not configuring sentry");
                 }
@@ -339,7 +354,7 @@ aws.initConfig(awsProps)
                 webServer
                     .set('trust proxy', true)
                     .set('view engine', 'pug')
-                    .on('error', err => logger.error('Caught error:', err, "(in web handler; continuing)"))
+                    .on('error', err => logger.error('Caught error in web handler; continuing:', err))
                     // Handle healthchecks at the root, as they're not expected from the outside world
                     .use('/healthcheck', new healthCheck.HealthCheckHandler().handle)
                     .use(httpRootDir, router)
@@ -347,14 +362,14 @@ aws.initConfig(awsProps)
                         next({status: 404, message: `page "${req.path}" could not be found`});
                     })
                     .use(Sentry.Handlers.errorHandler)
-                    // eslint-disable-next-line no-unused-vars
+                // eslint-disable-next-line no-unused-vars
                     .use((err, req, res, next) => {
                         const status =
-                            err.status ||
-                            err.statusCode ||
-                            err.status_code ||
-                            (err.output && err.output.statusCode) ||
-                            500;
+                                err.status ||
+                                err.statusCode ||
+                                err.status_code ||
+                                (err.output && err.output.statusCode) ||
+                                500;
                         const message = err.message || 'Internal Server Error';
                         res.status(status);
                         res.render('error', renderConfig({error: {code: status, message: message}}));
@@ -549,7 +564,7 @@ aws.initConfig(awsProps)
                 } else {
                     /* Assume that anything not dev is just production.
                      * This gives sane defaults for anyone who isn't messing with this */
-                    logger.info("  serving static files from '" + defArgs.staticDir + "'");
+                    logger.info(`  serving static files from '${defArgs.staticDir}'`);
                     router.use(express.static(defArgs.staticDir, {maxAge: staticMaxAgeSecs * 1000}));
                 }
 
@@ -615,11 +630,11 @@ aws.initConfig(awsProps)
                 startListening(webServer);
             })
             .catch(err => {
-                logger.error("Promise error:", err, "(shutting down)");
+                logger.error("Promise error (shutting down):", err);
                 process.exit(1);
             });
     })
     .catch(err => {
-        logger.error("AWS Init Promise error", err, "(shutting down)");
+        logger.error("AWS Init Promise error (shutting down)", err);
         process.exit(1);
     });
