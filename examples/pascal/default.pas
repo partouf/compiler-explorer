@@ -13,4 +13,6 @@ begin
     Square := num * num;
 end;
 
+exports
+  Square;
 end.

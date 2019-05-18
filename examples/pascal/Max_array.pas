@@ -17,5 +17,7 @@ begin
   end;
 end;
 
+exports
+  MaxArray;
 end.
 

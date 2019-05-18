@@ -18,4 +18,6 @@ begin
   end;
 end;
 
+exports
+  SumOverArray;
 end.
