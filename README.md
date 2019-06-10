@@ -53,12 +53,15 @@ Assuming you have a compatible version of `node` installed, simply running
  (_v10_) installed, either on the path or at `NODE_DIR`
  (an environment variable or `make` parameter).
 
-
 Running with `make EXTRA_ARGS='--language LANG'` will allow you to load
  `LANG` exclusively, where `LANG` is one for the language ids/aliases defined
  in `lib/languages.js`. The `Makefile` will automatically install all the
  third party libraries needed to run; using `npm` to install server-side and
  client side components.
+
+Some languages need extra tools to demangle them, e.g. `rust`, `d`, or `haskell`.
+ Such tools are kept separately in the
+ [tools repo](https://github.com/mattgodbolt/compiler-explorer-tools).
 
 The config system leaves a lot to be desired. Work has been done on porting
  [CCS](https://github.com/hellige/ccs-cpp) to Javascript and then something
@@ -76,12 +79,11 @@ If you want to point it at your own GCC or similar binaries, either edit the
  `*.local.properties` files have the highest priority when loading properties.
 
 When running in a corporate setting the URL shortening service can be replaced
- by an internal one to avoid leaking source code outside of the organization.
- This is done by adding a new module in `static/urlshorten-myservice.js` and
- setting the `urlShortenService` variable in configuration. This module should
- export a single function, see the [google module](static/urlshorten-google.js)
- for an example. `urlShortenService` can also be set to `none` to disable url
- shortening altogether.
+ by an internal one if the default storage driver isn't appropriate for your
+ environment. To do this, add a new module in `lib/shortener-myservice.js` and
+ set the `urlShortenService` variable in configuration. This module should
+ export a single function, see the [tinyurl module](lib/shortener-tinyurl.js)
+ for an example.
 
 ### RESTful API
 
