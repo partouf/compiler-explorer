@@ -33,7 +33,7 @@ require('bootstrap-slider');
 var sharing = require('./sharing');
 var _ = require('underscore');
 var $ = require('jquery');
-var GoldenLayout = require('golden-layout');
+var GoldenLayout = require('./platinum-layout');
 var Components = require('./components');
 var url = require('./url');
 var clipboard = require('clipboard');

@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+		"outDir": "./",
+		"sourceMap": true,
+		"rootDir": "."
+	},
+	"files": [
+		"static/platinum-layout.ts"
+	]
+}
